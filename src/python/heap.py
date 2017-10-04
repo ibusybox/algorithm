@@ -5,18 +5,18 @@ import math
 
 def visit(A):
     n = len(A)
-    h = int(math.log(n, 2)) + 1
-    i = 0
+    height = int(math.log(n, 2)) + 1
+    h = 0
     visted = []
-    while i < h:
+    while h < height:
         h_visited = []
-        start = 2**i - 1
-        end = 2**(i+1) - 1
+        start = 2**h - 1
+        end = 2**(h+1) - 1
         j = start
         while j < end and j < n:
             h_visited.append(A[j])
             j = j + 1
-        i = i + 1
+        h = h + 1
         visted.append(h_visited)
     return visted
 
@@ -33,11 +33,14 @@ def max_heapify(A, i, heap_size):
         tmp = A[largest]
         A[largest] = A[i]
         A[i] = tmp
+        # make sure heap A start with largest is a maximum heap
         max_heapify(A, largest, heap_size)
 
 def build_max_heap(A):
     n = len(A)
     i = n/2
+    # array index start with n/2 is leaf nodes in a heap
+    # so make sure each parent is maxinum heap
     while i >= 0:
         max_heapify(A, i, n)
         i = i - 1
@@ -45,13 +48,13 @@ def build_max_heap(A):
 def heap_sort(A):
     build_max_heap(A)
     n = len(A)
-    i = n - 1
-    while i > 0:
-        tmp = A[i]
-        A[i] = A[0]
+    heap_size = n - 1
+    while heap_size > 0:
+        tmp = A[heap_size]
+        A[heap_size] = A[0]
         A[0] = tmp
-        max_heapify(A, 0, i)
-        i = i - 1
+        max_heapify(A, 0, heap_size)
+        heap_size = heap_size - 1
 
 def left(i):
     return 2*i+1
